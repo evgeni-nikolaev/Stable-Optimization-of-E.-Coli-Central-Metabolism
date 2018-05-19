@@ -1,0 +1,70 @@
+%=====================================================================
+% FUNCTION: print_sa_parameters_mod
+%=====================================================================
+function [done] = print_sa_parameters_mod()
+%
+% PURPOSE: Prints simulated annealing algorithm parameters to a LONG and SHORT files
+%
+done = 0;   % MATLAB requires at least one return parameter
+
+global file_name_LONG;
+global file_name_ITER_SHORT file_name_TEMP_SHORT;
+global file_name_OPTP_SHORT file_name_FCC_SHORT;
+global T_SA max_iter_SA alpha_SA L_SA FCC_FLAG;
+%--------------------------------------------------------------------------
+% OUTPUT TO LONG FILE
+%--------------------------------------------------------------------------
+fid_LONG = fopen(file_name_LONG,'a');
+fprintf(fid_LONG,'\nSA PARAMETERS:\n');
+fprintf(fid_LONG,'FCC_FLAG          = %1d\n',    FCC_FLAG);
+fprintf(fid_LONG,'init. temperature = %12.6f\n',  T_SA);
+fprintf(fid_LONG,'alpha factor      = %12.6f\n',  alpha_SA);
+fprintf(fid_LONG,'max. iterations   = %4d\n',    max_iter_SA);
+fprintf(fid_LONG,'relaxation iter.  = %4d\n\n',  L_SA);
+fclose(fid_LONG);
+
+%--------------------------------------------------------------------------
+% OUTPUT TO SHORT ITERATION AND TEMPERATURE FILES
+%--------------------------------------------------------------------------
+fid_ITER_SHORT = fopen(file_name_ITER_SHORT,'a');
+fprintf(fid_ITER_SHORT,'SA PARAMETERS:\n');
+fprintf(fid_ITER_SHORT,'FCC_FLAG          = %1d\n',    FCC_FLAG);
+fprintf(fid_ITER_SHORT,'init. temperature = %12.6f\n',  T_SA);
+fprintf(fid_ITER_SHORT,'alpha factor      = %12.6f\n',  alpha_SA);
+fprintf(fid_ITER_SHORT,'max. iterations   = %4d\n',    max_iter_SA);
+fprintf(fid_ITER_SHORT,'relaxation iter.  = %4d\n\n',  L_SA);
+fprintf(fid_ITER_SHORT,'cpu total         local     iter#               temp     best_ratio      curr_ratio     trial_ratio    enzymes and feedbacks\n');
+fclose(fid_ITER_SHORT);
+
+fid_TEMP_SHORT = fopen(file_name_TEMP_SHORT,'a');
+fprintf(fid_TEMP_SHORT,'SA PARAMETERS:\n');
+fprintf(fid_TEMP_SHORT,'FCC_FLAG          = %1d\n',    FCC_FLAG);
+fprintf(fid_TEMP_SHORT,'init. temperature = %12.6f\n',  T_SA);
+fprintf(fid_TEMP_SHORT,'alpha factor      = %12.6f\n',  alpha_SA);
+fprintf(fid_TEMP_SHORT,'max. iterations   = %4d\n',    max_iter_SA);
+fprintf(fid_TEMP_SHORT,'relaxation iter.  = %4d\n\n',  L_SA);
+fprintf(fid_TEMP_SHORT,'cpu total     iter#              temp             hi(T)          aver.rate          sigma    sigma norm.     best_ratio      curr_ratio     trial_ratio\n');
+fclose(fid_TEMP_SHORT);
+
+fid_OPTP_SHORT = fopen(file_name_OPTP_SHORT,'a');
+fprintf(fid_OPTP_SHORT,'SA PARAMETERS:\n');
+fprintf(fid_OPTP_SHORT,'FCC_FLAG          = %1d\n',    FCC_FLAG);
+fprintf(fid_OPTP_SHORT,'init. temperature = %12.6f\n',  T_SA);
+fprintf(fid_OPTP_SHORT,'alpha factor      = %12.6f\n',  alpha_SA);
+fprintf(fid_OPTP_SHORT,'max. iterations   = %4d\n',    max_iter_SA);
+fprintf(fid_OPTP_SHORT,'relaxation iter.  = %4d\n\n',  L_SA);
+fclose(fid_OPTP_SHORT);
+
+fid_FCC_SHORT = fopen(file_name_FCC_SHORT,'a');
+fprintf(fid_FCC_SHORT,'SA PARAMETERS:\n');
+fprintf(fid_FCC_SHORT,'FCC_FLAG          = %1d\n',    FCC_FLAG);
+fprintf(fid_FCC_SHORT,'init. temperature = %12.6f\n',  T_SA);
+fprintf(fid_FCC_SHORT,'alpha factor      = %12.6f\n',  alpha_SA);
+fprintf(fid_FCC_SHORT,'max. iterations   = %4d\n',    max_iter_SA);
+fprintf(fid_FCC_SHORT,'relaxation iter.  = %4d\n\n',  L_SA);
+fprintf(fid_FCC_SHORT,'iter#   rate.ratio       enzymes: 1                2                3                4                5                6                7                8                9               10               11               12               13               14               15               16               17               18               19               20               21               22               23               24               25               26               27               28               29               30              sum');
+                                   fprintf(fid_FCC_SHORT,'          31(EEC)          31(FRC)          32(EEC)          32(FRC)          33(EEC)          33(FRC)          34(EEC)          34(FRC)          35(EEC)          35(FRC)          36(EEC)          36(FRC)          37(EEC)          37(FRC)          38(EEC)          38(FRC)          39(EEC)          39(FRC)          40(EEC)          40(FRC)          41(EEC)          41(FRC)          42(EEC)          42(FRC)          43(EEC)          43(FRC)\n');
+fclose(fid_FCC_SHORT);
+
+done = 1;   % MATLAB requires at least one return parameter
+% END OF FUNCTION: print_sa_parameters_mod

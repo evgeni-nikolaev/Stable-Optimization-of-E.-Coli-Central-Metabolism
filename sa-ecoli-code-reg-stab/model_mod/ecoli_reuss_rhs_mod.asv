@@ -1,0 +1,159 @@
+%=====================================================================
+% FUNCTION: ecoli_reuss_rhs_mod
+%=====================================================================
+function [dcdt] = ecoli_reuss_rhs_mod(t,c,rmax,K)
+%
+%   PURPOSE: Assigns the right hand sides for the Reuss' dynamical model of Escherichia coli
+%
+%   Last Modified: 2004-12-14
+%
+
+%disp('*** START *** ecoli_reuss_rhs_mod(t,c)')        
+%disp(t);
+
+n_cons = 17;
+
+% %---------------------------------------------------------------------
+% % Unbalanced metabolites
+% %---------------------------------------------------------------------
+% c_atp = 4.27;   
+% c_adp = 0.595;  
+% c_amp = 0.955;  
+% c_nadph = 0.062;  
+% c_nadp = 0.195;  
+% c_nadh = 0.1;    
+% c_nad = 1.47;   
+% 
+% %---------------------------------------------------------------------
+% % Fixed concentrations
+% %---------------------------------------------------------------------
+% c_glc_ext = 0.0556; 
+
+%---------------------------------------------------------------------
+% Dynamic concentrations
+%---------------------------------------------------------------------
+min_c = min(c);
+
+if min_c < 0
+    for i=1:n_cons
+        if c(i) < 0
+            c(i) = 0.0001;
+        end            
+    end            
+end    
+
+% c_g6p = c(1);
+% c_f6p = c(2);
+% c_fdp = c(3);
+% c_gap = c(4);
+% c_dhap = c(5);
+% c_pgp = c(6);
+% c_3pg = c(7);
+% c_2pg = c(8);
+% c_pep = c(9);
+% c_pyr = c(10);
+% c_6pg = c(11);
+% c_ribu5p = c(12);
+% c_xyl5p = c(13);
+% c_sed7p = c(14);
+% c_rib5p = c(15);
+% c_e4p = c(16);
+% c_g1p = c(17);
+
+%=====================================================================
+% Kinetic Rates
+%=====================================================================
+n_rts = 30;
+rate = zeros(n_rts,1);
+rate = ecoli_reuss_rates_mod(t,c,rmax,K);
+
+r_PTS = rate(1);
+r_PGI = rate(2);
+r_PFK = rate(3);
+r_ALDO = rate(4);
+r_TIS = rate(5);
+r_GAPDH = rate(6);
+r_PGK = rate(7);
+r_PGM = rate(8);
+r_ENO = rate(9);
+r_PK = rate(10);
+r_PDH = rate(11);
+r_PepCxylase = rate(12);
+r_PGlucoM = rate(13);
+r_G1PAT = rate(14);
+r_RPPK = rate(15);
+r_G3PDH = rate(16);
+r_SerSynth = rate(17);
+r_Synth1 = rate(18);
+r_Synth2 = rate(19);
+r_DAHPS = rate(20);
+r_G6PDH = rate(21);
+r_PGDH = rate(22);
+r_Ru5P = rate(23); 
+r_R5PI = rate(24);
+r_TKa = rate(25);
+r_TKb = rate(26);
+r_TA = rate(27);
+r_MurSynth = rate(28);
+r_TrpSynth = rate(29);
+r_MetSynth = rate(30);
+
+%---------------------------------------------------------------------
+% MASS BALANCES ODES
+%---------------------------------------------------------------------
+dcdt = zeros(n_cons,1);
+
+STO = 65;
+
+% c_g6p = c(1)
+dcdt(1) = STO*r_PTS - r_PGI - r_G6PDH - r_PGlucoM;
+
+% c_f6p = c(2)
+dcdt(2) = r_PGI - r_PFK + r_TKb + r_TA - 2*r_MurSynth;
+
+% c_fdp = c(3)
+dcdt(3) = r_PFK - r_ALDO;
+
+% c_gap = c(4)
+dcdt(4) = r_ALDO + r_TIS - r_GAPDH + r_TKa + r_TKb - r_TA + r_TrpSynth;
+
+% c_dhap = c(5)
+dcdt(5) = r_ALDO - r_TIS - r_G3PDH;
+
+% c_pgp = c(6)
+dcdt(6) = r_GAPDH - r_PGK;
+
+% c_3pg = c(7)
+dcdt(7) = r_PGK - r_PGM - r_SerSynth;
+
+% c_2pg = c(8)
+dcdt(8) = r_PGM - r_ENO;
+
+% c_pep = c(9)
+dcdt(9) = r_ENO - r_PK - STO*r_PTS - r_PepCxylase - r_DAHPS - r_Synth1;
+
+% c_pyr = c(10)
+dcdt(10) = r_PK + STO*r_PTS - r_PDH - r_Synth2 + r_MetSynth + r_TrpSynth;
+
+% c_6pg = c(11)
+dcdt(11) = r_G6PDH - r_PGDH;
+
+% c_ribu5p = c(12)
+dcdt(12) = r_PGDH - r_Ru5P - r_R5PI;
+
+% c_xyl5p = c(13)
+dcdt(13) = r_Ru5P - r_TKa - r_TKb;
+
+% c_sed7p = c(14)
+dcdt(14) = r_TKa - r_TA;
+
+% c_rib5p = c(15)
+dcdt(15) = r_R5PI - r_TKa - r_RPPK;
+
+% c_e4p = c(16)
+dcdt(16) = r_TA - r_TKb - r_DAHPS;
+
+% c_g1p = c(17)
+dcdt(17) = r_PGlucoM - r_G1PAT;
+
+% END OF FUNCTION: ecoli_reuss_rhs_mod
